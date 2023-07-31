@@ -1,0 +1,10 @@
+# Node.js specific
+node_modules/
+
+# Angular specific
+dist/
+e2e/
+.angular-cli.json
+.npmrc
+.vscode
+.editorconfig
