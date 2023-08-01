@@ -3,7 +3,7 @@
 </div> -->
 
 
-<div class="container-x1">
+<div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
             <div class="table-title">
@@ -12,19 +12,20 @@
                         <h2>Manage Servers</h2>
                     </div>
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-primary">Print Report</button>
-                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
-                            <i class="material-icons">&#xE147;</i>
-                            <span>New Server</span>
-                        </a>
-                        <span>
-                            <select name="status"
-                                class="btn btn-info" style="height: 32.91;">
-                                <option value="ALL">ALL</option>
-                                <option value="SERVER_UP">SERVER UP</option>
-                                <option value="SERVER_DOWN">SERVER DOWN</option>
-                            </select>
-                        </span>
+                        <div class="items">
+                            <button type="button" class="btn btn-primary">Print Report</button>
+                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
+                                <i class="material-icons">&#xE147;</i>
+                                <span>New Server</span>
+                            </a>
+                            <span>
+                                <select name="status" class="btn btn-info" style="height: 32.91;">
+                                    <option value="ALL">ALL</option>
+                                    <option value="SERVER_UP">SERVER UP</option>
+                                    <option value="SERVER_DOWN">SERVER DOWN</option>
+                                </select>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div><br>
@@ -57,12 +58,12 @@
                                 <td>{{server.type }}</td>
                                 <td>
                                     <span class="badge"
-                                    [ngClass]="[server.status === Status.SERVER_UP ? ' badge-success' : 'badge-danger']">
+                                        [ngClass]="[server.status === Status.SERVER_UP ? ' badge-success' : 'badge-danger']">
                                         {{server.status === Status.SERVER_UP ? ' SERVER UP ' : ' SERVER DOWN '}}
                                     </span>
                                 </td>
                                 <td>
-                                    <a style="cursor: pointer;">
+                                    <a (click)="pingServer(server.ipAddress)" style="cursor: pointer;">
                                         <i *ngIf="(filterStatus$ | async) === '' || (filterStatus$ | async) !== server.ipAddress"
                                             class="material-icons" title="Ping server">&#xe328;</i>
                                         <i *ngIf="(filterStatus$ | async) === server.ipAddress"
@@ -121,8 +122,15 @@
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <input type="text" name="status" class="form-control" required>
+                        <select name="status" class="form-control" required>
+                            <option value="STATUS UP">STATUS UP</option>
+                            <option value="STATUS DOWN">STATUS DOWN</option>
+                        </select>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="addButton" class="btn btn-success" onclick="handleAddClick()">Add</button>
+                    <button id="cancelButton" class="btn btn-warning" onclick="handleCancelClick()">Cancel</button>
                 </div>
             </form>
         </div>

@@ -25,11 +25,11 @@ public class ServerApplication {
 	@Bean
 	CommandLineRunner run(ServerRepo serverRepo) {
 		return orgs -> {
-			serverRepo.save(new Server(null, "192.168.1.160", "Ubuntu Linux", "16 GB", "Personal PC",
+			serverRepo.save(new Server(null, "192.168.1.79", "Ubuntu Linux", "16 GB", "Personal PC",
 					"http://localhost:8080/server/image/server1.png", SERVER_UP));
-			serverRepo.save(new Server(null, "192.168.1.58", "Fedora Linux", "16 GB", "Dell tower",
+			serverRepo.save(new Server(null, "192.168.1.58", "Fedora Linux", "16 GB", "Dell Tower",
 					"http://localhost:8080/server/image/server2.png", SERVER_DOWN));
-			serverRepo.save(new Server(null, "192.168.1.21", "Windows 11", "32 GB", " Web Server",
+			serverRepo.save(new Server(null, "192.168.1.80", "Windows 11", "32 GB", " Web Server",
 					"http://localhost:8080/server/image/server3.png", SERVER_UP));
 			serverRepo.save(new Server(null, "192.168.1.14", "Red Hat Enterprise Linux", "64 GB", "Mail Server",
 					"http://localhost:8080/server/image/server4.png", SERVER_DOWN));

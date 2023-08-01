@@ -8,3 +8,5 @@ e2e/
 .npmrc
 .vscode
 .editorconfig
+.angular
+.gitignore
