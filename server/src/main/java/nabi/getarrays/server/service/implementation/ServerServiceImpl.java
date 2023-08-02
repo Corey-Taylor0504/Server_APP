@@ -39,6 +39,7 @@ public class ServerServiceImpl implements ServerService  {
         Server server = serverRepo.findByIpAddress(ipAddress);
         InetAddress address = InetAddress.getByName(ipAddress);
         server.setStatus(address.isReachable(10000) ? SERVER_UP : SERVER_DOWN);
+        System.out.println(server);
         serverRepo.save(server);
         return server;
     }

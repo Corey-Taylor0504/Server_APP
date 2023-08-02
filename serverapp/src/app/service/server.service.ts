@@ -27,7 +27,7 @@ export class ServerService {
   );
 
   ping$ = (ipAddress: string) => <Observable<CustomResponse>>
-  this.http.get<CustomResponse>(`${this.apiUrl}/server/save/${ipAddress}`)
+  this.http.get<CustomResponse>(`${this.apiUrl}/server/ping/${ipAddress}`)
   .pipe(
     tap(console.log),
     catchError(this.handleError)
@@ -36,7 +36,6 @@ export class ServerService {
   filter$ = (status: Status, response: CustomResponse) => <Observable<CustomResponse>>
     new Observable<CustomResponse>(
       suscriber => {
-        console.log("response");
         suscriber.next(
           status === Status.ALL ? { ...response, message: `Servers filtered by ${status} status` } :
           {

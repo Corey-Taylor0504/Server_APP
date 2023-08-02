@@ -26,7 +26,7 @@ public class ServerResource {
     private final ServerServiceImpl serverService;
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getServers() throws InterruptedException {
+    public ResponseEntity<Response> getServers() {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -54,6 +54,7 @@ public class ServerResource {
 
     @PostMapping("/save")
     public ResponseEntity<Response> save(@RequestBody @Valid Server server) {
+
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
