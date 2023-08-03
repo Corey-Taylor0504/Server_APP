@@ -54,7 +54,6 @@ public class ServerResource {
 
     @PostMapping("/save")
     public ResponseEntity<Response> save(@RequestBody @Valid Server server) {
-
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())

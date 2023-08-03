@@ -7,6 +7,7 @@ import { Status } from './enum/status.enum'
 import { CustomResponse } from './interface/custom-response';
 import { NgForm } from '@angular/forms';
 import { Server } from './interface/server';
+import { NotificationService } from './service/notification.server';
 
 @Component({
   selector: 'app-root',
@@ -34,17 +35,23 @@ export class AppComponent implements OnInit {
 
 
 
-  constructor(private serverService: ServerService) { }
+
+
+
+  constructor(private serverService: ServerService, private notifier: NotificationService) { }
 
   ngOnInit(): void {
     this.appState$ = this.serverService.server$
       .pipe(
         map(response => {
+          this.notifier.onDefault(response.message);
           this.dataSubject.next(response)
+
           return { dataState: DataState.LOADED_STATE, appData: {...response, data: {servers: response.data.servers.reverse() } }}
         }),
         startWith({ dataState: DataState.LOADING_STATE }),
         catchError((error: string) => {
+          this.notifier.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error })
         })
       )
@@ -57,11 +64,13 @@ export class AppComponent implements OnInit {
         map(response => {
           const index = this.dataSubject.value.data.servers.findIndex(server => server.id === response.data.server.id);
           this.dataSubject.value.data.servers[index] = response.data.server;
+          this.notifier.onDefault(response.message);
           this.filterSubject.next('');
           return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }),
         catchError((error: string) => {
+          this.notifier.onError(error);
           this.filterSubject.next('');
           return of({ dataState: DataState.ERROR_STATE, error })
         })
@@ -78,6 +87,7 @@ export class AppComponent implements OnInit {
             {
               ...response, data: { servers: [response.data.server, ...this.dataSubject.value.data.servers] }
             })
+          this.notifier.onDefault(response.message);
           document.getElementById('closeModal').click();
           this.isLoading.next(false);
           serverForm.resetForm({ status: this.Status.SERVER_DOWN });
@@ -85,6 +95,7 @@ export class AppComponent implements OnInit {
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }),
         catchError((error: string) => {
+          this.notifier.onError(error);
           this.isLoading.next(false);
           return of({ dataState: DataState.ERROR_STATE, error })
         })
@@ -95,10 +106,12 @@ export class AppComponent implements OnInit {
     this.appState$ = this.serverService.filter$(status.target.value, this.dataSubject.value)
       .pipe(
         map(response => {
+          this.notifier.onDefault(response.message);
           return { dataState: DataState.LOADED_STATE, appData: response }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }),
         catchError((error: string) => {
+          this.notifier.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -110,11 +123,13 @@ export class AppComponent implements OnInit {
         map(response => {
           this.dataSubject.next(
             { ...response, data: { servers: this.dataSubject.value.data.servers.filter(s => s.id !== server.id)} }
-          )
+          );
+          this.notifier.onDefault(response.message);
           return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }),
         catchError((error: string) => {
+          this.notifier.onError(error);
           this.filterSubject.next('');
           return of({ dataState: DataState.ERROR_STATE, error })
         })
@@ -122,6 +137,7 @@ export class AppComponent implements OnInit {
   }
 
   printReport(): void {
+    this.notifier.onDefault("Report Downloaded!");
     // window.print();
     let dataType = 'application/vnd.ms-excel.sheet.macroEnabled.12';
     let tableSelect = document.getElementById('servers');
